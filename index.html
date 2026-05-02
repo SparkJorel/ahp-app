@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AHP — Aide a la decision multicritere</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container">
+    <h1>AHP <span class="muted">— Analytic Hierarchy Process</span></h1>
+    <p class="subtitle">Choisir la meilleure alternative entre plusieurs options selon des criteres multiples.</p>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="card" id="welcome">
+    <h2>Demarrer</h2>
+    <p>Chargez l'exemple pre-rempli pour decouvrir l'application, ou definissez votre propre probleme.</p>
+    <div class="actions">
+      <button id="load-preset" class="primary">Charger l'exemple : Universites du Cameroun</button>
+      <button id="reset" class="secondary">Reinitialiser / nouveau probleme</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>1. Definir le probleme</h2>
+    <label class="field">
+      <span>Objectif :</span>
+      <input id="goal-input" type="text" placeholder="Ex : Choisir le meilleur smartphone">
+    </label>
+
+    <div class="two-col">
+      <div>
+        <h3>Criteres</h3>
+        <ul id="criteria-list" class="entity-list"></ul>
+        <button id="add-criterion" class="ghost">+ Ajouter un critere</button>
+      </div>
+      <div>
+        <h3>Alternatives</h3>
+        <ul id="alternatives-list" class="entity-list"></ul>
+        <button id="add-alternative" class="ghost">+ Ajouter une alternative</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="criteria-section">
+    <h2>2. Comparer les criteres entre eux</h2>
+    <p class="hint">Pour chaque paire, indiquez quel critere est plus important et a quel point. Echelle de Saaty (1 = egalite, 9 = extremement plus important).</p>
+    <div id="criteria-matrix-container" class="matrix-wrap"></div>
+  </section>
+
+  <section class="card" id="alternatives-section">
+    <h2>3. Comparer les alternatives selon chaque critere</h2>
+    <p class="hint">Une matrice par critere. L'application gere les criteres categoriels (qualitatifs) comme numeriques (a minimiser ou maximiser) via les comparaisons par paires.</p>
+    <div id="alt-matrices-container"></div>
+  </section>
+
+  <div class="compute-bar">
+    <button id="compute" class="primary big">Calculer les resultats</button>
+  </div>
+
+  <section class="card hidden" id="results-section">
+    <h2>4. Resultats</h2>
+    <div id="results-content"></div>
+  </section>
+
+  <footer class="footnote">
+    <p>Methode AHP — Saaty (1970). INF4178 Genie Logiciel, Universite de Yaounde 1.</p>
+  </footer>
+
+</main>
+
+<script src="ahp.js"></script>
+<script src="preset.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
