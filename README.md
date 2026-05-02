@@ -6,7 +6,11 @@ Application web d'aide à la décision multicritère basée sur la méthode AHP 
 
 ---
 
-## Démo
+## Démo en ligne
+
+**Application déployée :** https://sparkjorel.github.io/ahp-app/
+
+**Dépôt source :** https://github.com/SparkJorel/ahp-app
 
 Cas d'étude pré-rempli : **Choix de la meilleure université d'État au Cameroun** parmi UY1, UDouala, UDschang et UNgaoundéré, selon 4 critères : réputation, coût de la vie, diversité des filières et localisation.
 
@@ -71,24 +75,11 @@ ahp-app/
 
 Pas de framework, pas de build, pas de dépendance NPM. Vanilla JS / HTML / CSS.
 
-## Déploiement sur GitHub Pages
+## Déploiement
 
-```bash
-git init
-git add .
-git commit -m "Initial commit: AHP web app"
-git branch -M main
-git remote add origin https://github.com/<votre-utilisateur>/<votre-repo>.git
-git push -u origin main
-```
+L'application est hébergée sur **GitHub Pages**, branche `main`, dossier racine. Tout commit poussé sur `main` redéploie automatiquement le site.
 
-Puis dans **Settings → Pages** du dépôt :
-
-- *Source* : `Deploy from a branch`
-- *Branch* : `main` / `/ (root)`
-- Cliquer sur **Save**
-
-L'URL publique sera de la forme `https://<votre-utilisateur>.github.io/<votre-repo>/`.
+URL publique : https://sparkjorel.github.io/ahp-app/
 
 ## Auteur
 
