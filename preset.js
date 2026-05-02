@@ -2,9 +2,9 @@
 // All numerical comparisons are illustrative — adjust to your own preferences.
 
 const PRESET_UNIVERSITES = {
-  goal: "Choisir la meilleure universite d'Etat au Cameroun",
-  criteria: ["Reputation", "Cout de vie", "Filieres", "Localisation"],
-  alternatives: ["UY1", "UDouala", "UDschang", "UNgaoundere"],
+  goal: "Choisir la meilleure université d'État au Cameroun",
+  criteria: ["Réputation", "Coût de vie", "Filières", "Localisation"],
+  alternatives: ["UY1", "UDouala", "UDschang", "UNgaoundéré"],
 
   criteriaMatrix: [
     [1,    3,   2,   5  ],
@@ -14,19 +14,19 @@ const PRESET_UNIVERSITES = {
   ],
 
   altMatrices: {
-    "Reputation": [
+    "Réputation": [
       [1,    2,   3,   3  ],
       [1/2,  1,   2,   2  ],
       [1/3,  1/2, 1,   1  ],
       [1/3,  1/2, 1,   1  ]
     ],
-    "Cout de vie": [
+    "Coût de vie": [
       [1,    2,   1/3, 1/2],
       [1/2,  1,   1/4, 1/3],
       [3,    4,   1,   2  ],
       [2,    3,   1/2, 1  ]
     ],
-    "Filieres": [
+    "Filières": [
       [1,    2,   3,   3  ],
       [1/2,  1,   2,   2  ],
       [1/3,  1/2, 1,   1  ],

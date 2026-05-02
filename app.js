@@ -10,23 +10,23 @@ const state = {
 };
 
 const SAATY_OPTIONS = [
-  { value: 9,    label: "9 — A extremement plus important" },
+  { value: 9,    label: "9 — A extrême" },
   { value: 8,    label: "8" },
-  { value: 7,    label: "7 — A tres fortement plus important" },
+  { value: 7,    label: "7 — A très fort" },
   { value: 6,    label: "6" },
-  { value: 5,    label: "5 — A fortement plus important" },
+  { value: 5,    label: "5 — A fort" },
   { value: 4,    label: "4" },
-  { value: 3,    label: "3 — A moderement plus important" },
+  { value: 3,    label: "3 — A modéré" },
   { value: 2,    label: "2" },
-  { value: 1,    label: "1 — Egalite" },
+  { value: 1,    label: "1 — Égalité" },
   { value: 1/2,  label: "1/2" },
-  { value: 1/3,  label: "1/3 — B moderement plus important" },
+  { value: 1/3,  label: "1/3 — B modéré" },
   { value: 1/4,  label: "1/4" },
-  { value: 1/5,  label: "1/5 — B fortement plus important" },
+  { value: 1/5,  label: "1/5 — B fort" },
   { value: 1/6,  label: "1/6" },
-  { value: 1/7,  label: "1/7 — B tres fortement plus important" },
+  { value: 1/7,  label: "1/7 — B très fort" },
   { value: 1/8,  label: "1/8" },
-  { value: 1/9,  label: "1/9 — B extremement plus important" }
+  { value: 1/9,  label: "1/9 — B extrême" }
 ];
 
 // === Helpers ===
@@ -98,7 +98,7 @@ function renderPairwiseMatrix(container, labels, matrix, onUpdate) {
   if (n < 2) {
     const p = document.createElement("p");
     p.className = "hint";
-    p.textContent = "Ajoutez au moins 2 elements pour comparer.";
+    p.textContent = "Ajoutez au moins 2 éléments pour comparer.";
     container.appendChild(p);
     return;
   }
@@ -218,7 +218,7 @@ function renderAltMatrices() {
   if (state.criteria.length === 0 || state.alternatives.length < 2) {
     const p = document.createElement("p");
     p.className = "hint";
-    p.textContent = "Definissez d'abord les criteres et au moins 2 alternatives.";
+    p.textContent = "Définissez d'abord les critères et au moins 2 alternatives.";
     container.appendChild(p);
     return;
   }
@@ -227,6 +227,7 @@ function renderAltMatrices() {
     block.className = "alt-matrix-block";
     const h3 = document.createElement("h3");
     h3.textContent = "Comparaison des alternatives selon : " + crit;
+
     block.appendChild(h3);
     const matrixDiv = document.createElement("div");
     matrixDiv.className = "matrix-wrap";
@@ -272,7 +273,7 @@ function reset() {
 }
 
 function addCriterion() {
-  const name = "Critere " + (state.criteria.length + 1);
+  const name = "Critère " + (state.criteria.length + 1);
   state.criteria.push(name);
   resyncMatrices();
   rerender();
@@ -295,7 +296,7 @@ function compute() {
 
   // Validation
   if (state.criteria.length < 2) {
-    out.innerHTML = '<div class="result-banner error">Il faut au moins 2 criteres.</div>';
+    out.innerHTML = '<div class="result-banner error">Il faut au moins 2 critères.</div>';
     section.scrollIntoView({ behavior: "smooth" });
     return;
   }
@@ -310,7 +311,7 @@ function compute() {
   const critCons = AHP.consistency(state.criteriaMatrix, critWeights);
 
   if (!critCons.isConsistent) {
-    renderInconsistency(out, "Matrice des criteres", state.criteria,
+    renderInconsistency(out, "Matrice des critères", state.criteria,
                         state.criteriaMatrix, critWeights, critCons);
     section.scrollIntoView({ behavior: "smooth" });
     return;
@@ -343,24 +344,27 @@ function renderInconsistency(out, matrixName, labels, matrix, weights, cons) {
   const banner = document.createElement("div");
   banner.className = "result-banner error";
   banner.innerHTML =
-    "<strong>Matrice incoherente</strong> &mdash; " + matrixName +
+    "<strong>Matrice incohérente</strong> &mdash; " + matrixName +
     " : CR = <strong>" + cons.CR.toFixed(4) + "</strong> (seuil = 0.10).";
   out.appendChild(banner);
 
   const explain = document.createElement("p");
   explain.innerHTML =
     "L'application n'a pas pu proposer une recommandation car les comparaisons par paires se contredisent. " +
-    "Voici la metrique principale et la paire la plus problematique a reviser.";
+    "Voici la métrique principale et la paire la plus problématique à réviser.";
   out.appendChild(explain);
 
+  const tableWrap = document.createElement("div");
+  tableWrap.className = "table-wrap";
   const table = document.createElement("table");
   table.className = "consistency-table";
   table.innerHTML =
     "<tr><th>&lambda;<sub>max</sub></th><td>" + cons.lambdaMax.toFixed(4) + "</td></tr>" +
-    "<tr><th>Indice de coherence (CI)</th><td>" + cons.CI.toFixed(4) + "</td></tr>" +
-    "<tr><th>Indice aleatoire (RI)</th><td>" + cons.RI.toFixed(2) + "</td></tr>" +
-    "<tr><th>Ratio de coherence (CR)</th><td class='ko'>" + cons.CR.toFixed(4) + " (&ge; 0.10)</td></tr>";
-  out.appendChild(table);
+    "<tr><th>Indice de cohérence (CI)</th><td>" + cons.CI.toFixed(4) + "</td></tr>" +
+    "<tr><th>Indice aléatoire (RI)</th><td>" + cons.RI.toFixed(2) + "</td></tr>" +
+    "<tr><th>Ratio de cohérence (CR)</th><td class='ko'>" + cons.CR.toFixed(4) + " (&ge; 0.10)</td></tr>";
+  tableWrap.appendChild(table);
+  out.appendChild(tableWrap);
 
   const worst = AHP.mostInconsistentPair(matrix, weights);
   if (worst) {
@@ -369,10 +373,10 @@ function renderInconsistency(out, matrixName, labels, matrix, weights, cons) {
     const a = labels[worst.i];
     const b = labels[worst.j];
     card.innerHTML =
-      "<strong>Paire la plus problematique : " + a + " vs " + b + "</strong><br>" +
-      "Vous avez indique que <strong>" + a + "</strong> est <strong>" +
-        formatNumber(worst.actual) + "</strong>x preferable a <strong>" + b + "</strong>.<br>" +
-      "Or, d'apres l'ensemble de vos autres comparaisons, ce ratio devrait etre proche de <strong>" +
+      "<strong>Paire la plus problématique : " + a + " vs " + b + "</strong><br>" +
+      "Vous avez indiqué que <strong>" + a + "</strong> est <strong>" +
+        formatNumber(worst.actual) + "</strong>× préférable à <strong>" + b + "</strong>.<br>" +
+      "Or, d'après l'ensemble de vos autres comparaisons, ce ratio devrait être proche de <strong>" +
         formatNumber(worst.ideal) + "</strong>.<br>" +
       "<em>Ajustez cette comparaison (ou ses voisines) pour ramener le CR sous 0.10.</em>";
     out.appendChild(card);
@@ -380,17 +384,31 @@ function renderInconsistency(out, matrixName, labels, matrix, weights, cons) {
 }
 
 function renderResults(out, critWeights, altWeights, result, critCons, altConsistencies) {
-  // Banner
-  const banner = document.createElement("div");
-  banner.className = "result-banner success";
-  banner.innerHTML =
-    "<strong>Toutes les matrices sont coherentes (CR &lt; 0.10).</strong> " +
-    "La meilleure alternative est <strong>" + result.ranked[0].name + "</strong> " +
-    "avec un score de " + result.ranked[0].score.toFixed(4) + ".";
-  out.appendChild(banner);
+  // Winner card
+  const winner = result.ranked[0];
+  const runnerUp = result.ranked[1];
+  const winnerCard = document.createElement("div");
+  winnerCard.className = "winner-card";
+  let meta = "Score final : <strong>" + formatPercent(winner.score) + "</strong>";
+  if (runnerUp) {
+    meta += " &nbsp;·&nbsp; suivie de " + runnerUp.name + " (" + formatPercent(runnerUp.score) + ")";
+  }
+  winnerCard.innerHTML =
+    '<p class="winner-label">Meilleure alternative</p>' +
+    '<h3 class="winner-name">' + winner.name + '</h3>' +
+    '<p class="winner-meta">' + meta + '</p>';
+  out.appendChild(winnerCard);
+
+  const note = document.createElement("p");
+  note.className = "hint";
+  note.style.marginBottom = "20px";
+  note.innerHTML = "Toutes les matrices sont cohérentes (CR &lt; 0.10).";
+  out.appendChild(note);
 
   // Ranking
-  out.appendChild(document.createElement("h3")).textContent = "Classement final";
+  const rankingTitle = document.createElement("h3");
+  rankingTitle.textContent = "Classement final";
+  out.appendChild(rankingTitle);
   const max = result.ranked[0].score;
   const ul = document.createElement("ul");
   ul.className = "ranking";
@@ -408,24 +426,29 @@ function renderResults(out, critWeights, altWeights, result, critCons, altConsis
 
   // Criteria weights detail
   const det1 = document.createElement("details");
-  det1.innerHTML = "<summary>Poids des criteres</summary>";
+  det1.innerHTML = "<summary>Poids des critères</summary>";
+  const t1Wrap = document.createElement("div");
+  t1Wrap.className = "table-wrap";
   const t1 = document.createElement("table");
   t1.className = "detail-table";
-  t1.innerHTML = "<tr><th>Critere</th><th>Poids</th></tr>";
+  t1.innerHTML = "<tr><th>Critère</th><th>Poids</th></tr>";
   state.criteria.forEach((c, i) => {
     t1.innerHTML += "<tr><td>" + c + "</td><td>" + formatPercent(critWeights[i]) + "</td></tr>";
   });
-  det1.appendChild(t1);
+  t1Wrap.appendChild(t1);
+  det1.appendChild(t1Wrap);
   out.appendChild(det1);
 
   // Per-criterion alternative scores
   const det2 = document.createElement("details");
-  det2.innerHTML = "<summary>Scores des alternatives par critere</summary>";
+  det2.innerHTML = "<summary>Scores des alternatives par critère</summary>";
+  const t2Wrap = document.createElement("div");
+  t2Wrap.className = "table-wrap";
   const t2 = document.createElement("table");
   t2.className = "detail-table";
   let header = "<tr><th>Alternative</th>";
-  state.criteria.forEach(c => {
-    header += "<th>" + c + "<br><small>(poids " + formatPercent(critWeights[state.criteria.indexOf(c)]) + ")</small></th>";
+  state.criteria.forEach((c, idx) => {
+    header += "<th>" + c + "<br><small>(poids " + formatPercent(critWeights[idx]) + ")</small></th>";
   });
   header += "<th>Score final</th></tr>";
   t2.innerHTML = header;
@@ -437,17 +460,20 @@ function renderResults(out, critWeights, altWeights, result, critCons, altConsis
     row += "<td><strong>" + formatPercent(result.finalScores[ai]) + "</strong></td></tr>";
     t2.innerHTML += row;
   });
-  det2.appendChild(t2);
+  t2Wrap.appendChild(t2);
+  det2.appendChild(t2Wrap);
   out.appendChild(det2);
 
   // Consistency report
   const det3 = document.createElement("details");
-  det3.innerHTML = "<summary>Rapport de coherence</summary>";
+  det3.innerHTML = "<summary>Rapport de cohérence</summary>";
+  const t3Wrap = document.createElement("div");
+  t3Wrap.className = "table-wrap";
   const t3 = document.createElement("table");
   t3.className = "consistency-table";
   t3.innerHTML = "<tr><th>Matrice</th><th>&lambda;<sub>max</sub></th><th>CI</th><th>CR</th><th>Statut</th></tr>";
   t3.innerHTML +=
-    "<tr><td>Criteres</td><td>" + critCons.lambdaMax.toFixed(4) + "</td>" +
+    "<tr><td>Critères</td><td>" + critCons.lambdaMax.toFixed(4) + "</td>" +
     "<td>" + critCons.CI.toFixed(4) + "</td>" +
     "<td>" + critCons.CR.toFixed(4) + "</td>" +
     "<td class='ok'>OK</td></tr>";
@@ -460,7 +486,8 @@ function renderResults(out, critWeights, altWeights, result, critCons, altConsis
       "<td>" + con.CR.toFixed(4) + "</td>" +
       "<td class='ok'>OK</td></tr>";
   }
-  det3.appendChild(t3);
+  t3Wrap.appendChild(t3);
+  det3.appendChild(t3Wrap);
   out.appendChild(det3);
 }
 
